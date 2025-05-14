@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjetas Motivacionales TimeBro</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: #f7f7f7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+        }
+        
+        .card {
+            width: 300px;
+            height: 200px;
+            position: relative;
+            perspective: 1500px;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+        
+        .card:hover .card-inner, .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .card-front {
+            text-align: center;
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .card-subtitle {
+            font-size: 14px;
+            color: #666;
+            font-weight: 400;
+        }
+        
+        .card-back-title {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-features {
+            list-style: none;
+            font-size: 13px;
+            color: #555;
+            text-align: left;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .card-features li {
+            margin-bottom: 5px;
+        }
+        
+        .cta {
+            font-size: 13px;
+            color: #333;
+            font-weight: 500;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        .qr-code {
+            width: 70px;
+            height: 70px;
+            background: #fff;
+            margin: 5px auto;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: #999;
+        }
+        
+        .url {
+            font-size: 10px;
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        .instructions {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .card-1 .card-front, .card-1 .card-back {
+            background-color: #E6E6FA;
+            border: 1px solid #D9D9F2;
+        }
+        
+        .card-2 .card-front, .card-2 .card-back {
+            background-color: #E3F2FD;
+            border: 1px solid #D6E9F9;
+        }
+        
+        .card-3 .card-front, .card-3 .card-back {
+            background-color: #E8F5E9;
+            border: 1px solid #DBEEDE;
+        }
+        
+        .card-4 .card-front, .card-4 .card-back {
+            background-color: #FFF0E6;
+            border: 1px solid #F9E7D9;
+        }
+        
+        .design-element {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            width: 25px;
+            height: 25px;
+            opacity: 0.5;
+        }
+        
+        .card-1 .design-element {
+            background: radial-gradient(circle, #D6D6F5 20%, transparent 70%);
+        }
+        
+        .card-2 .design-element {
+            background: radial-gradient(circle, #D6E9F9 20%, transparent 70%);
+        }
+        
+        .card-3 .design-element {
+            background: radial-gradient(circle, #DBEEDE 20%, transparent 70%);
+        }
+        
+        .card-4 .design-element {
+            background: radial-gradient(circle, #F9E7D9 20%, transparent 70%);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                gap: 20px;
+            }
+            
+            .card {
+                width: 280px;
+                height: 190px;
+            }
+            
+            .card-title {
+                font-size: 16px;
+            }
+        }
+        
+        /* Botón para imprimir */
+        .print-button {
+            background-color: #4a4a4a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .print-button:hover {
+            background-color: #333;
+        }
+        
+        /* Estilo para impresión */
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+            
+            h1, .instructions, .print-button {
+                display: none;
+            }
+            
+            .container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 10mm;
+                width: 210mm; /* A4 width */
+            }
+            
+            .card {
+                width: 85mm; /* ~12cm */
+                height: 55mm; /* ~8cm */
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            
+            .card-inner {
+                transform: none !important;
+                box-shadow: none;
+            }
+            
+            .card:nth-child(odd) .card-inner {
+                transform: none !important;
+            }
+            
+            .card:nth-child(even) .card-inner {
+                transform: rotateY(180deg) !important;
+            }
+            
+            .card-front, .card-back {
+                border: 1px solid #eee;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Tarjetas Motivacionales TimeBro</h1>
+    
+    <div class="instructions">Haz clic en las tarjetas para voltearlas</div>
+    
+    <div class="container">
+        <!-- Tarjeta 1 -->
+        <div class="card card-1">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">No estás solo. El caos no es tu culpa, es tu sistema.</div>
+                    <div class="card-subtitle">Respira. Reorganiza. Retoma el control.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 22 -->
+        <div class="card card-2">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">El multitasking es un mito. El enfoque es tu superpoder.</div>
+                    <div class="card-subtitle">Una tarea a la vez, con toda tu atención.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 23 -->
+        <div class="card card-3">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">El éxito es la suma de pequeños esfuerzos repetidos día tras día.</div>
+                    <div class="card-subtitle">La constancia es el camino.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 24 -->
+        <div class="card card-4">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">Cada "no" a lo innecesario es un "sí" a lo que realmente importa.</div>
+                    <div class="card-subtitle">Aprende a decir que no para poder decir que sí.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 2 -->
+        <div class="card card-2">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">Si no organizas tu tiempo, alguien más lo hará por ti.</div>
+                    <div class="card-subtitle">Toma el control. Define tus prioridades.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 3 -->
+        <div class="card card-3">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">Tener todo en la cabeza no te hace fuerte, te hace agotado.</div>
+                    <div class="card-subtitle">Libera tu mente. Confía en un sistema.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 4 -->
+        <div class="card card-4">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">Imagina una vida donde tu agenda no te domina. La estás creando.</div>
+                    <div class="card-subtitle">Un paso a la vez. Un logro cada día.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 5 -->
+        <div class="card card-1">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">El tiempo es el recurso más democrático: todos tenemos 24 horas.</div>
+                    <div class="card-subtitle">Es cómo las usas lo que marca la diferencia.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 6 -->
+        <div class="card card-2">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">Cada "sí" a lo urgente es un "no" a lo importante.</div>
+                    <div class="card-subtitle">Aprende a distinguir entre ambos.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 7 -->
+        <div class="card card-3">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">No se trata de hacer más cosas, sino las cosas correctas.</div>
+                    <div class="card-subtitle">Calidad sobre cantidad, siempre.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 8 -->
+        <div class="card card-4">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">El descanso no es un premio, es parte del proceso.</div>
+                    <div class="card-subtitle">Programa pausas. Serás más eficiente.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 9 -->
+        <div class="card card-1">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">La procrastinación es el ladrón silencioso de tus sueños.</div>
+                    <div class="card-subtitle">Pequeñas acciones hoy, grandes resultados mañana.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 10 -->
+        <div class="card card-2">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">Lo que no se mide, no se puede mejorar.</div>
+                    <div class="card-subtitle">Conoce tus patrones para transformarlos.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 11 -->
+        <div class="card card-3">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">Un minuto de planeación ahorra diez de ejecución.</div>
+                    <div class="card-subtitle">La organización es una inversión, no un gasto.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 12 -->
+        <div class="card card-4">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">La mente despejada piensa mejor que la mente saturada.</div>
+                    <div class="card-subtitle">Vacía tus pendientes en un sistema confiable.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 13 -->
+        <div class="card card-1">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">No es cuestión de tener tiempo, sino de crear tiempo.</div>
+                    <div class="card-subtitle">Prioriza. Delega. Automatiza.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 14 -->
+        <div class="card card-2">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">La constancia supera al talento cuando el talento no es constante.</div>
+                    <div class="card-subtitle">Pequeños hábitos, grandes transformaciones.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 15 -->
+        <div class="card card-3">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">Tu futuro se construye con las decisiones de hoy.</div>
+                    <div class="card-subtitle">Cada tarea completada es un paso adelante.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 16 -->
+        <div class="card card-4">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">La disciplina es elegir entre lo que quieres ahora y lo que quieres más.</div>
+                    <div class="card-subtitle">Organízate hoy para triunfar mañana.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 17 -->
+        <div class="card card-1">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">El caos en tu espacio refleja el caos en tu mente.</div>
+                    <div class="card-subtitle">Organiza tu entorno, aclara tus pensamientos.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 18 -->
+        <div class="card card-2">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">No esperes a sentirte motivado para empezar. Empieza para sentirte motivado.</div>
+                    <div class="card-subtitle">La acción precede a la inspiración.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 19 -->
+        <div class="card card-3">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">El perfeccionismo es el enemigo del progreso.</div>
+                    <div class="card-subtitle">Mejor hecho que perfecto.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 20 -->
+        <div class="card card-4">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">Tu tiempo vale oro. Inviértelo, no lo gastes.</div>
+                    <div class="card-subtitle">Cada minuto cuenta. Hazlo significativo.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+                        <li>🗂️ Organiza tareas</li>
+                        <li>📊 Mejora tu productividad</li>
+                        <li>🎮 Gana puntos por avanzar</li>
+                    </ul>
+                    <div class="cta">📲 Escanea y pruébala</div>
+                    <div class="qr-code">QR Code</div>
+                    <div class="url">jelp13.github.io/TimeBro/</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 21 -->
+        <div class="card card-1">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="design-element"></div>
+                    <div class="card-title">Dividir para conquistar. Las grandes metas se logran paso a paso.</div>
+                    <div class="card-subtitle">Convierte lo imposible en pequeñas tareas posibles.</div>
+                </div>
+                <div class="card-back">
+                    <div class="logo">TimeBro</div>
+                    <div class="card-back-title">La app que transforma tus pendientes en logros.</div>
+                    <ul class="card-features">
+    
+    <button class="print-button" onclick="preparePrint()">Preparar para imprimir</button>
+    
+    <script>
+        // Función para voltear las tarjetas al hacer clic
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+        });
+        
+        // Función para preparar la impresión
+        function preparePrint() {
+            alert('Se abrirá la ventana de impresión. Para mejores resultados:\n\n1. Selecciona "Guardar como PDF" o imprime en papel\n2. Ajusta al tamaño de página\n3. Las tarjetas se organizarán automáticamente para impresión frente/reverso');
+            window.print();
+        }
+        
+        // Función para generar códigos QR (simulados)
+        function generateQRCode() {
+            // En una implementación real, aquí generaríamos los códigos QR con una biblioteca
+            // Por ahora, solo simulamos el aspecto visual
+            const qrCodes = document.querySelectorAll('.qr-code');
+            qrCodes.forEach(qr => {
+                let html = '';
+                for(let i = 0; i < 5; i++) {
+                    let row = '';
+                    for(let j = 0; j < 5; j++) {
+                        row += `<div style="width: 12px; height: 12px; background: ${Math.random() > 0.7 ? '#000' : 'transparent'}; margin: 1px;"></div>`;
+                    }
+                    html += `<div style="display: flex;">${row}</div>`;
+                }
+                qr.innerHTML = html;
+            });
+        }
+        
+        // Iniciar generación de códigos QR al cargar
+        document.addEventListener('DOMContentLoaded', generateQRCode);
+    </script>
+</body>
+</html>
